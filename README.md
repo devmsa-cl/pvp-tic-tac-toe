@@ -20,3 +20,7 @@ To run:
 ```bash
 bun run start
 ```
+
+### Credits
+
+- Sound effect [Pixabay](https://pixabay.com)

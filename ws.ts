@@ -92,7 +92,10 @@ export const WsHandler = (io: Server) => {
       // mark the cell
       room.board[data.cellPosition] = room.playerXorO.get(socket.id)!;
 
-      const winner = checkWinner(room.board, room.playerXorO.get(socket.id)!);
+      const [winner, combo] = checkWinner(
+        room.board,
+        room.playerXorO.get(socket.id)!
+      );
 
       if (winner) {
         // game over
@@ -118,6 +121,7 @@ export const WsHandler = (io: Server) => {
         // emit game over and announce winner
         io.to(room.room).emit("winner", {
           score: Array.from(room.score),
+          combo: combo,
           room: data.room,
           winner: socket.id,
         });
@@ -179,14 +183,14 @@ function playAgain(io: Server, socket: Socket, data: { room: string }) {
     room.playAgain.clear();
   }
 }
-function checkWinner(board: string[], mark: string) {
+function checkWinner(board: string[], mark: string): [boolean, Array<number>] {
   for (let combination of winCombo) {
     const [a, b, c] = combination;
     if (board[a!] === mark && board[b!] === mark && board[c!] === mark) {
-      return true;
+      return [true, combination];
     }
   }
-  return false;
+  return [false, []];
 }
 
 function searchPlayer(io: Server, socket: Socket) {

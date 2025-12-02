@@ -3,6 +3,8 @@ import Indicator from "./indicator.js";
 import Lobby from "./lobby.js";
 import Player from "./player.js";
 import Popup from "./popup.js";
+const moveSound = document.getElementById("move-sound");
+const winSound = document.getElementById("win-sound");
 const socket = io();
 
 socket.on("connect", () => {
@@ -61,6 +63,7 @@ class TicTacToe {
   updateBoard() {
     this.socket.on("update-board", ({ cellPosition }) => {
       this.board.markCell(cellPosition);
+      moveSound.play();
     });
   }
   playAgain() {
@@ -100,6 +103,7 @@ class TicTacToe {
         });
 
         this.board.markCell(index, true);
+        moveSound.play();
       }
     });
   }
@@ -118,8 +122,11 @@ class TicTacToe {
   alertWinner() {
     this.socket.on("winner", (data) => {
       this.state.gameOver = true;
+      console.log(data.combo);
       this.state.score = new Map(data.score);
       this.player.updateScoreBoard();
+      this.board.highlightCells(data.combo);
+      winSound.play();
       popup.message(
         `${this.socket.id === data.winner ? "You Win" : "Sorry, you lose."}`,
         4000

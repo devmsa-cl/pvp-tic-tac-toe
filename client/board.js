@@ -16,6 +16,12 @@ export default class Board {
     this.cells.forEach((cell) => {
       cell.classList.remove("cell-x");
       cell.classList.remove("cell-o");
+      cell.classList.remove("matched");
+    });
+  }
+  highlightCells(combo) {
+    combo.forEach((cell) => {
+      this.cells[cell].classList.add("matched");
     });
   }
   markCell(position, self = false) {
