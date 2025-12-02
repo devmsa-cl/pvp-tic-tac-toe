@@ -1,0 +1,7 @@
+version: "1.0"
+services:
+  app:
+    container_name: pvp_tic_tac_toe
+    build: .
+    ports:
+      - "${PORT}:3000"
