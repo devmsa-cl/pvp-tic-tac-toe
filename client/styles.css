@@ -1,0 +1,14 @@
+.cell-x::before {
+  content: "X";
+  width: 100%;
+  height: 100%;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1e293b; /* slate-800 */
+}
+.cell-o::before {
+  content: "O";
+  font-size: 3rem;
+  font-weight: bold;
+  color: #1e293b; /* slate-800 */
+}
