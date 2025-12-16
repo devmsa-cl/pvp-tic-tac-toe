@@ -10,6 +10,8 @@ export default class Lobby {
     this.root.appendChild(this.#markup());
     this.form = this.root.querySelector(".form");
 
+    this.#loadUsername();
+
     this.onSearch();
     this.onJoin();
   }
@@ -27,6 +29,8 @@ export default class Lobby {
       let username = input.value;
       if (username === "") {
         username = "Anonymous";
+      } else {
+        this.#saveUsername(username);
       }
 
       this.socket.emit("search-for-player", username);
@@ -53,6 +57,18 @@ export default class Lobby {
           ></span>`;
     }
   }
+
+  // Storage username in local storage
+  #saveUsername(name) {
+    localStorage.setItem("username", name);
+  }
+  // Load username from local storage
+  #loadUsername() {
+    const input = this.form.querySelector("input");
+    const local = localStorage.getItem("username");
+    input.value = local == "" || local == "Anonymous" ? local == "" : local;
+  }
+
   #markup() {
     const fragment = document.createDocumentFragment();
     const lobby = document.createElement("div");
